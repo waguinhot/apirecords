@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\User;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,30 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+})->name('user.get');
 
-Route::post('/sanctum/token', function (Request $request) {
-    $request->validate([
-        'name' => 'required',
-        'email' => 'required|email',
-        'password' => 'required',
-        'device_name' => 'required',
-    ]); 
+Route::post('/user/create', [UserController::class , 'store'])->name('user.store');
 
-    $data = $request->all();
-    
-    $user = new User();
-    $user->name = $data['name'];
-    $user->email = $data['email'];
-    $user->password = Hash::make($data['password']);
-    $user->save();
-    // $user = User::where('email', $request->email)->first();
- 
-    // if (! $user || ! Hash::check($request->password, $user->password)) {
-        
-    //      return response(json_encode(['email' => 'The provided credentials are incorrect.']), 403);   
-        
-    // }
- 
-    return $user->createToken($request->device_name)->plainTextToken;
-});
+Route::post('/auth/login' , [UserController::class , 'login'])->name('user.login');
+
