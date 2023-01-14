@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Actions\User\GetMyRecords;
 use App\Actions\User\RegisterUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\LoginUserRequest;
@@ -25,8 +26,7 @@ class UserController extends Controller
         return $user->createToken($request->device_name)->plainTextToken;
     }
     public function store(StoreUserRequest $request)
-    {
-        
+    {       
             $name = $request->input('name');
             $email = $request->input('email');
             $password = Hash::make($request->input('password'));
@@ -40,5 +40,17 @@ class UserController extends Controller
                 ]
             ));
         
+    }
+
+    public function getRecords(Request $request)
+    {
+        $records = GetMyRecords::run($request->user()->id);
+
+        return response(json_encode(
+            [
+                'records' => $records
+            ]
+        ));
+
     }
 }
