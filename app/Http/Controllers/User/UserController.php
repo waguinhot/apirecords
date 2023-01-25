@@ -42,11 +42,5 @@ class UserController extends Controller
 
     }
 
-    public function getRecords(Request $request)
-    {
-        $records = GetMyRecords::run($request->user()->id);
 
-        return response(json_encode($records));
-
-    }
 }

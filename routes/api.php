@@ -29,10 +29,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/user/create', [UserController::class , 'store'])->name('user.store');
 Route::post('/auth/login' , [UserController::class , 'login'])->name('user.login');
 
-Route::middleware('auth:sanctum')->get('/record/all', [UserController::class , 'getRecords'])->name('user.record.get');
 
 
-
-
+Route::middleware('auth:sanctum')->get('/record/all', [RecordsController::class , 'getRecordsForUser'])->name('user.record.get');
 Route::middleware('auth:sanctum')->post('/record/create', [RecordsController::class , 'store'])->name('record.create');
 
